@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 
-
-export default function Search({ value, onChange, children }) {
+export default function Search({ value, onChange, children, onSubmit }) {
 
     return (
-        <form action="">
+        <form onSubmit={onSubmit}>
         {children}
          <input 
          type="text"
          onChange={onChange}
          value={value}
         />
+        <button type="submit">
+            {children}
+        </button>
         </form>
     )
 }

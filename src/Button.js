@@ -5,7 +5,7 @@ export default function Button({ onClick, className, children })  {
     return (
         <button
             onClick={onClick}
-            className='button-inline'
+            className={className}
             type="button"
         >
             {children}
