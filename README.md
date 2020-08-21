@@ -52,3 +52,9 @@ Deployment
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 npm run build fails to minify
+
+Search from the Hackernews API:
+
+Sorted by relevance, then points, then number of comments
+
+GEThttp://hn.algolia.com/api/v1/search?query=...
