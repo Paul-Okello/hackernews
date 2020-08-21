@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
+import Search from './Search';
+import Table from './Table';
 
-
-const list =[
+const list = [
   {
-    title: 'React',
-    url: 'https://reactjs.org/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
+  title: 'React',
+  url: 'https://reactjs.org/',
+  author: 'Jordan Walke',
+  num_comments: 3,
+  points: 4,
+  objectID: 0,
   },
   {
-    title: 'Redux',
-    url: 'https://redux.js.org/',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
+  title: 'Redux',
+  url: 'https://redux.js.org/',
+  author: 'Dan Abramov, Andrew Clark',
+  num_comments: 2,
+  points: 5,
+  objectID: 1,
   },
-];
-const isSearched = searchTerm => item => 
-     item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  
-
+  ];
 
 export default class App extends Component {
   constructor(props) {
@@ -50,31 +47,15 @@ export default class App extends Component {
 
     return (
       <div className="App">
-        <form action="">
-          <input 
-           type="text"
-           onChange={this.onSearchChange}
-           value={searchTerm}
-          />
-        </form>
-        {
-          list.filter(isSearched(searchTerm)).map( (item) => 
-            <div key={item.objectID}> 
-              <span><a href={item.url}>{item.title}</a></span>
-              <span>{item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points}</span>
-              <span>
-                <button
-                 type='button'
-                 onClick={() => this.onDismiss(item.objectID)}
-                >
-                  Dismiss
-                </button>
-              </span>
-            </div>
-          )
-        }
+        <Search 
+         value={searchTerm}
+         onChange={this.onSearchChange}
+        />
+        <Table
+         list={list}
+         pattern={searchTerm}
+         onDismiss={this.onDismiss} 
+        />
       </div>
     );
   }
