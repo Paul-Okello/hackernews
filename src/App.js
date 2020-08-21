@@ -41,9 +41,13 @@ export default class App extends Component {
   }
   onDismiss(id) {
     const isNotId = item => item.objectID !== id;
-    const updatedList = this.state.list.filter(isNotId);
-    this.setState({list: updatedList});
-    console.log("Updated list: ",updatedList);
+    const updatedHits = this.state.result.hits.filter(isNotId);
+    this.setState({
+      result: {
+        ...this.state.result, hits: updatedHits
+      }
+    });
+    console.log("Result -> ",this.state.result);
   }
  
   render() {
@@ -60,11 +64,13 @@ export default class App extends Component {
         >
           Search
         </Search>
-        <Table
+        { result &&
+          <Table
          list={result.hits}
          pattern={searchTerm}
          onDismiss={this.onDismiss} 
         />
+      }
         </div>
         
       </div>
