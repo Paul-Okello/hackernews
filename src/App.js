@@ -46,16 +46,21 @@ export default class App extends Component {
    const { searchTerm, list } = this.state;
 
     return (
-      <div className="App">
+      <div className="page">
+        <div className="interactions">
         <Search 
          value={searchTerm}
          onChange={this.onSearchChange}
-        />
+        >
+          Search
+        </Search>
         <Table
          list={list}
          pattern={searchTerm}
          onDismiss={this.onDismiss} 
         />
+        </div>
+        
       </div>
     );
   }
