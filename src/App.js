@@ -17,37 +17,51 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result:null,
+      results:null,
+      searchKey:'',
       searchTerm: DEFAULT_QUERY,
     }
+    this.needToSearchTopStories=this.needToSearchTopStories.bind(this);
     this.setSearchTopStories=this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories=this.fetchSearchTopStories.bind(this);
     this.onSearchSubmit=this.onSearchSubmit.bind(this);
     this.onDismiss=this.onDismiss.bind(this);
     this.onSearchChange=this.onSearchChange.bind(this);
   }
+  needToSearchTopStories(searchTerm) {
+      return !this.state.results[searchTerm];
+  }
   fetchSearchTopStories(searchTerm, page = 0) {
+
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
          .then(response => response.json())
-         .then(result => this.setSearchTopStories(result))
+         .then(results => this.setSearchTopStories(results))
          .catch(error => console.log(error));
   }
   onSearchSubmit(event) {
     const { searchTerm } = this.state;
-    this.fetchSearchTopStories(searchTerm);
+    if(this.needToSearchTopStories(searchTerm)) {
+        this.fetchSearchTopStories(searchTerm);
+    }
     event.preventDefault();
   }
-  setSearchTopStories(result) {
-    const { hits, page } = result;
-    const oldHits = page !== 0  // check if there are old hits
-     ? this.state.result.hits
+  setSearchTopStories(results) {
+    const { hits, page } = results;
+    const { searchKey,results } = this.state;
+    const oldHits = results && results[searchKey]  // check if there are old hits
+     ? results[searchKey].hits
      : [];
     const updatedHits = [
       ...oldHits,
       ...hits
     ] 
     this.setState({
-      result:{ hits: updatedHits, page}
+        results:{
+            ...results,
+            [searchKey]: {
+                hits: updatedHits, page
+            }
+        }
     });
   }
   componentDidMount() {
@@ -57,8 +71,8 @@ export default class App extends Component {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
           .then(Response => Response.json())
           .then(result => {
-            this.setSearchTopStories(result)
-            console.log("Result: ",result.hits);
+            this.setSearchTopStories(results)
+            console.log("Result: ",results.hits);
           })
           .catch(error => console.log(error));
   }
@@ -67,21 +81,29 @@ export default class App extends Component {
     
   }
   onDismiss(id) {
-    const isNotId = item => item.objectID !== id;
-    const updatedHits = this.state.result.hits.filter(isNotId);
-    this.setState({
-      result: {
-        ...this.state.result, hits: updatedHits
-      }
-    });
-    console.log("Result -> ",this.state.result);
+        const { searchKey, results } = this.state;
+        const { hits, page } = results[searchKey]
+        const isNotId = item => item.objectID !== id;
+        const updatedHits = hits.filter(isNotId);
+        this.setState({
+        result: {
+            ...results, hits: {updatedHits, page}
+        }
+        });
+        console.log("Result -> ",this.state.result);
   }
  
   render() {
-   const { searchTerm, result } = this.state;
-   const page = (result && result.page) || 0;
-
-   if(!result) { return null; }
+   const { searchTerm, results, searchKey } = this.state;
+   const page = (results && 
+                 results[searchKey] &&
+                 results[searchKey].hits) || 0;
+const list = (
+    results &&
+    results[searchKey] &&
+    results[searchKey].hits
+) || 0;
+   if(!results) { return null; }
 
     return (
       <div className="page">
@@ -95,13 +117,13 @@ export default class App extends Component {
         </Search>
         { result &&
           <Table
-         list={result.hits}
+         list={list}
          onDismiss={this.onDismiss} 
         />
         }
         <div className="interactions">
           <Button
-           onClick={ () => this.fetchSearchTopStories(searchTerm, page+1)} 
+           onClick={ () => this.fetchSearchTopStories(searchKey, page+1)} 
           >
             More...
           </Button>
