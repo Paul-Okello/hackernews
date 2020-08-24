@@ -34,6 +34,11 @@
     border: 1px solid #e3e3e3;
 }
 
+.table-row:hover {
+    background: rgb(2, 0, 36);
+    background: radial-gradient(circle, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 0.3799719716988358) 0%, rgba(0, 212, 255, 0.38837533304337357) 81%);
+}
+
 .table-header>span {
     overflow: hidden;
     text-overflow: ellipsis;
