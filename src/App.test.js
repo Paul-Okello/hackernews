@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import  renderer  from 'react-test-renderer';
-import App, { Search, Button, Table } from './App';
+import App, { Search, ButtonUse, Table } from './App';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -54,7 +54,7 @@ describe('Button', ()=>{
 
   it('renders withot crashing', () =>{
     const div = document.createElement('div');
-    ReactDOM.render(<Button>More...</Button>, div);
+    ReactDOM.render(<ButtonUse>More...</ButtonUse>, div);
     ReactDOM.unmountComponentAtNode(div);
   })
 
