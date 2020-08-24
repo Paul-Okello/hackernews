@@ -1,6 +1,9 @@
 This project was bootstrapped with Create React App.
 Available Scripts
 
+Hosting URL : https://hacker-news-e2a17.web.app
+
+
 In the project directory, you can run:
 npm start
 
