@@ -52,7 +52,6 @@ export default function HackerSearch() {
     fetchResults();
   }, [query, page]);
 
-  console.log("results", results);
 
   const SkeletonCard = () => (
     <Card>
